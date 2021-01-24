@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date:    13:21:33 01/24/2021 
+// Create Date:    13:52:22 01/24/2021 
 // Design Name: 
-// Module Name:    AdderSubtractor32bit 
+// Module Name:    DivideBy64 
 // Project Name: 
 // Target Devices: 
 // Tool versions: 
@@ -18,13 +18,12 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module AdderSubtractor32x32 (
-	input  [31:0] A    , // input  [2's complement 32 bits]
-	input  [31:0] B    , // input  [2's complement 32 bits]
-	input         sel  , // input  [add:sel=0 || sub:sel=1] 
-	output [31:0] S      // output [2's complement 32 bits]
+module DivideBy64(
+	input [31:0] A, // Input a 32bits number
+	output [31:0] B // Outpus a 32bits number divided by 64
 );
-	// if sel = 0 then add else subtract
-	assign S = (sel) ? A - B : A + B;
-	
+	 // Right shift 6 bits
+	 assign B = {6'b000000, A[31:6]};
+	 // -->> Warning is for not using the 6 low value bits of A 
+	 
 endmodule

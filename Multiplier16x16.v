@@ -1,4 +1,4 @@
-`timescale 1ns / 1ps
+`timescale 1ns / 1ns
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
 // Engineer: 
@@ -25,4 +25,5 @@ module Multiplier16x16 (
 );
 	// Simply just multiply A in B
 	assign P = A * B;
+	
 endmodule
