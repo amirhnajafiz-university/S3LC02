@@ -18,8 +18,12 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module Multiplier8x8(
-    );
-
+module Multiplier8x8 (
+	input  [7:0] A , // input  [unsigned 08 bits]
+	input  [7:0] B , // input  [unsigned 08 bits]
+	output [15:0] P   // output [unsigned 16 bits]
+);
+	// Simply just multiply A in B
+	assign P = A * B;
 
 endmodule
