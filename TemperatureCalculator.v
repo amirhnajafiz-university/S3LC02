@@ -30,7 +30,9 @@ module TemperatureCalculator (
 	
 	// The 16*16 multiplier
 	wire [31:0] multi16x16_result;
-	Multiplier16x16 multi16x16 (multi8x8_result, adc_data, multi16x16_result);
+	wire [15:0] modified_vector;
+	assign modified_vector = {1'b0, adc_data[14:0]}; // Changing the last bit of this vector
+	Multiplier16x16 multi16x16 (multi8x8_result, modified_vector, multi16x16_result);
 	
 	// Divider
 	wire [31:0] vector_divide_by_64;
