@@ -19,8 +19,8 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 module DivideBy64(
-	input [31:0] A, // Input a 32bits number
-	output [31:0] B // Outpus a 32bits number divided by 64
+	input  [31:0] A , // Input a 32bits number
+	output [31:0] B   // Outpus a 32bits number divided by 64
 );
 	 // Right shift 6 bits
 	 assign B = {6'b000000, A[31:6]};

@@ -24,9 +24,19 @@ module TemperatureCalculator (
 	input  [15:0] adc_data , // adc  [sensor digital data]
 	output [31:0] tempc      // temp [temperature celsius]
 );
-
-	/* write your code here */
+	// First 8*8 multiplier
+	wire [15:0] multi8x8_result;
+	Multiplier8x8 multi8x8 (tc_ref, tc_ref, multi8x8_result);
 	
-	/* write your code here */
-
+	// The 16*16 multiplier
+	wire [31:0] multi16x16_result;
+	Multiplier16x16 multi16x16 (multi8x8_result, adc_data, multi16x16_result);
+	
+	// Divider
+	wire [31:0] vector_divide_by_64;
+	DivideBy64 divide (multi16x16_result, vector_divide_by_64);
+	
+	// Final Result of module 1
+	AdderSubtractor32x32 adder_subtractor (tc_base, vector_divide_by_64, adc_data[15], tempc);
+	
 endmodule
