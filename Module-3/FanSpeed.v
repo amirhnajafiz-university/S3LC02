@@ -45,7 +45,7 @@ module FanSpeed (
 		
 	end
 
-	assign pwm_data = data;
+	pwm_data = data;
 	/* write your code here */
 
 endmodule

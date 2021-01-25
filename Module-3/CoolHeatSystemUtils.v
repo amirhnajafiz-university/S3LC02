@@ -34,7 +34,8 @@
 // endmodule
 
 
-module shift_register(/*
+//module shift_register(
+/*
     input [7:0] chs_conf ,
     input load , 
     input shift ,
@@ -67,13 +68,19 @@ endmodule
 module counter (
     input [7:0] in,
     output [3:0] count,
-    output isEven,
+    output isEven
 );
     reg [3:0] cnt= 4'b0000;
     integer i=0;
     always @(in) begin
-        for(i=0;<8;i=i+1)
-            if(in[i]) cnt = cnt+1'b1;
+		if(in[0]) cnt <= cnt + 1'b1;
+		if(in[1]) cnt <= cnt + 1'b1;
+		if(in[2]) cnt <= cnt + 1'b1;
+		if(in[3]) cnt <= cnt + 1'b1;
+		if(in[4]) cnt <= cnt + 1'b1;
+		if(in[5]) cnt <= cnt + 1'b1;
+		if(in[6]) cnt <= cnt + 1'b1;
+		if(in[7]) cnt <= cnt + 1'b1;
     end
 
     assign count=cnt;
