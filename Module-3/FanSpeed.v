@@ -1,3 +1,4 @@
+`timescale 1ns / 1ns
 /*--  *******************************************************
 --  Computer Architecture Course, Laboratory Sources 
 --  Amirkabir University of Technology (Tehran Polytechnic)
@@ -18,34 +19,26 @@
 ---  Module Name: Fan Speed (PWM)
 ---  Description: Module3: 
 -----------------------------------------------------------*/
-`timescale 1 ns/1 ns
-
 module FanSpeed (
 	input        arst     , // reset [asynch]  
 	input        clk      , // clock [posedge] 
 	input  [7:0] speed    , // speed [duty-cycle]  
 	output       pwm_data   // data  [output]
 );
-	reg data;
-	reg count <= speed;
-	integer i;
-	/* write your code here */
-	always @(negedge arst or posedge clk) begin
-		if(~arst ) pwm_data=1'b0;
-		else
-			begin
-			for(i=0;i<=256;i=i+1)
-				begin
-					if(count >=0)
-					data = 1'b1;
-					else
-					data = 1'b0;
-				end
-			end
-		
+	reg data; 
+	wire [7:0] current;
+	
+	Counter count (clk, arst, current);
+	
+	always @ ( posedge clk or posedge arst )
+	begin
+		if ( arst == 1'b1 ) data <= 1'b0;
+		else begin
+			if ( current < speed ) data <= 1'b1;
+			else data <= 1'b0;
+		end
 	end
 
-	pwm_data = data;
-	/* write your code here */
+	assign pwm_data = data;
 
 endmodule

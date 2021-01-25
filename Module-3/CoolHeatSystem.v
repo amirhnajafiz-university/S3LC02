@@ -1,3 +1,4 @@
+`timescale 1ns/ 1ns
 /*--  *******************************************************
 --  Computer Architecture Course, Laboratory Sources 
 --  Amirkabir University of Technology (Tehran Polytechnic)
@@ -18,24 +19,17 @@
 ---  Module Name: Cool Heat System
 ---  Description: Module3:
 -----------------------------------------------------------*/
-`timescale 1 ns/1 ns
-
 module CoolHeatSystem (
 	input        arst      , // reset [asynch]  
 	input        clk       , // clock [posedge] 
-	
 	input  [7:0] speed     , // speed [duty-cycle]  
-	
 	input  [7:0] chs_conf  , // degree [temprature] 
-	
 	output [3:0] chs_power , // power  [cooler/heater] 
 	output       chs_mode  , // model  [heat=1/cool=0]
-
 	output       pwm_data    // data  [output]
 );
 
-	/* write your code here */
+	FanSpeed fs (arst, clk, speed, pwm_data);
+	ModePower mp (chs_conf, chs_power, chs_mode);
 	
-	/* write your code here */
-
 endmodule
