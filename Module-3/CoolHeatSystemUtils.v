@@ -41,7 +41,6 @@ module shift_register(
     input clk,
     output outBit ,
 );
-
     reg outBit;
     reg [7:0] d_inputs;
     reg [7:0] q_outputs;
@@ -66,17 +65,15 @@ module shift_register(
 endmodule
 
 module counter (
-    input in,
-    input clk, 
-    input reset,
+    input [7:0] in,
     output [3:0] count,
     output isEven,
 );
-    reg [3:0] cnt;
-
-    always @(posedge clk or negedge reset) begin
-        if(~reset) cnt=4'b0000;
-        else if(in) cnt = cnt + 1'b1;
+    reg [3:0] cnt= 4'b0000;
+    integer i=0;
+    always @(in) begin
+        for(i=0;<8;i=i+1)
+            if(in[i]) cnt = cnt+1'b1;
     end
 
     assign count=cnt;
