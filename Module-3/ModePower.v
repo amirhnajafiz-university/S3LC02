@@ -27,7 +27,11 @@ module ModePower (
 );
 
 	/* write your code here */
-	
+	reg [3:0] numOfOne;
+	reg mode;
+	counter c1(chs_conf,numOfOne,mode)
+	assign chs_mode = mode;
+	assign chs_power = numOfOne;
 	/* write your code here */
 
 endmodule
