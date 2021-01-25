@@ -23,21 +23,46 @@
 /***********************************************************/
 /************** Design Your Own Modules Below **************/
 
-module D_FF(
-    input D,
+// module D_FF(
+//     input D,
+//     input clk,
+//     output Q,
+// );
+//     reg Q;
+//     always @ (posedge clk)
+//         Q = D;
+// endmodule
+
+
+module shift_register(
+    input [7:0] chs_conf ,
+    input load , 
+    input shift ,
     input clk,
-    output Q,
+    output outBit ,
 );
-    reg Q;
-    always @ (posedge clk)
-        Q = D;
-endmodule
 
+    reg outBit;
+    reg [7:0] d_inputs;
+    reg [7:0] q_outputs;
 
-
-
-
-
+    always @ (load or shift) begin
+        if(load) d_inputs <= chs_conf;
+        if(shift)
+            begin
+                d_input[1]=q_output[0];
+                d_input[2]=q_output[1];
+                d_input[3]=q_output[2];
+                d_input[4]=q_output[3];
+                d_input[5]=q_output[4];
+                d_input[6]=q_output[5];
+                d_input[7]=q_output[6];
+                outBit=q_output[7];
+            end
+    end
+    always @(posedge clk) begin
+        q_outputs <= d_inputs;
+    end
 endmodule
 
 
