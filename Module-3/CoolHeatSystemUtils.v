@@ -65,6 +65,24 @@ module shift_register(
     end
 endmodule
 
+module counter (
+    input in,
+    input clk, 
+    input reset,
+    output [3:0] count,
+    output isEven,
+);
+    reg [3:0] cnt;
+
+    always @(posedge clk or negedge reset) begin
+        if(~reset) cnt=4'b0000;
+        else if(in) cnt = cnt + 1'b1;
+    end
+
+    assign count=cnt;
+    assign isEven = ~ cnt[0];
+    
+endmodule
 
 	
 /************** Design Your Own Modules Above **************/
