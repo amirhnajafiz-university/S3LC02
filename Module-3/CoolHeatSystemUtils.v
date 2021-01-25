@@ -34,7 +34,7 @@
 // endmodule
 
 
-module shift_register(
+module shift_register(/*
     input [7:0] chs_conf ,
     input load , 
     input shift ,
@@ -63,7 +63,7 @@ module shift_register(
         q_outputs <= d_inputs;
     end
 endmodule
-
+*/
 module counter (
     input [7:0] in,
     output [3:0] count,
