@@ -41,7 +41,7 @@ module ControlUnit (
 );
 	
 	// Regs that we use for state machine
-	reg [3:0] current_state, next_state;
+	reg [2:0] current_state, next_state;
 	
 	// Password checking circuit
 	wire pass_check;
@@ -54,29 +54,29 @@ module ControlUnit (
 		current_state = 3'b001;
 	end
 	
-	// State machine in behavioral model
-	always @ ( posedge clk or posedge arst or negedge request ) begin
+	always @ ( posedge clk or posedge arst or negedge request) begin
 		if ( arst == 1'b1 ) begin
-			// Reset is on
 			configout <= 0;
 			write_en <= 0;
 			current_state <= 3'b001;
 		end
 		else if ( request == 1'b0 ) begin
-			// Request is 0
 			configout <= 0;
 			write_en <= 0;
 			current_state <= 3'b001;
 		end
 		else begin
-			// State machine update
 			if ( current_state == `STATE_STORE ) begin
-				// Saving into memory is available
 				write_en <= 1'b1;
 				configout <= configin;
 			end
 			else write_en <= 1'b0;
-			// State machine switch cases
+			current_state <= next_state;
+		end
+	end
+	
+	always @ ( current_state ) begin
+		if ( request == 1'b1 ) begin
 			case (current_state)
 				`STATE_IDLE:
 					begin
@@ -86,6 +86,8 @@ module ControlUnit (
 					begin
 						if ( confirm == 1'b1 )
 							next_state <= `STATE_OTHERS;
+						else 
+							next_state <= `STATE_ACTIVE;
 					end
 				`STATE_OTHERS:
 					begin
@@ -98,11 +100,21 @@ module ControlUnit (
 					begin
 						if ( confirm == 1'b1 )
 							next_state <= `STATE_STORE;
+						else 
+							next_state <= `STATE_REQUEST;
 					end
+				`STATE_TRAP:
+					begin
+						next_state <= `STATE_TRAP;
+					end
+				`STATE_STORE:
+					begin
+						next_state <= `STATE_STORE;
+					end
+				default: next_state <= `STATE_IDLE;
 			endcase
-			// Moving states
-			current_state <= next_state;
 		end
+		else next_state <= `STATE_IDLE;
 	end
 	
 	// Debug assignment
