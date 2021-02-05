@@ -66,55 +66,52 @@ module ControlUnit (
 			current_state <= 3'b001;
 		end
 		else begin
+			current_state <= next_state;
 			if ( current_state == `STATE_STORE ) begin
 				write_en <= 1'b1;
 				configout <= configin;
 			end
 			else write_en <= 1'b0;
-			current_state <= next_state;
 		end
 	end
 	
 	always @ ( current_state ) begin
-		if ( request == 1'b1 ) begin
-			case (current_state)
-				`STATE_IDLE:
-					begin
+		case ( current_state )
+			`STATE_IDLE:
+				begin
+					next_state <= `STATE_ACTIVE;
+				end
+			`STATE_ACTIVE:
+				begin
+					if ( confirm == 1'b1 )
+						next_state <= `STATE_OTHERS;
+					else 
 						next_state <= `STATE_ACTIVE;
-					end
-				`STATE_ACTIVE:
-					begin
-						if ( confirm == 1'b1 )
-							next_state <= `STATE_OTHERS;
-						else 
-							next_state <= `STATE_ACTIVE;
-					end
-				`STATE_OTHERS:
-					begin
-						if ( pass_check == 1'b1 )
-							next_state <= `STATE_REQUEST;
-						else
-							next_state <= `STATE_TRAP;
-					end
-				`STATE_REQUEST:
-					begin
-						if ( confirm == 1'b1 )
-							next_state <= `STATE_STORE;
-						else 
-							next_state <= `STATE_REQUEST;
-					end
-				`STATE_TRAP:
-					begin
+				end
+			`STATE_OTHERS:
+				begin
+					if ( pass_check == 1'b1 )
+						next_state <= `STATE_REQUEST;
+					else
 						next_state <= `STATE_TRAP;
-					end
-				`STATE_STORE:
-					begin
+				end
+			`STATE_REQUEST:
+				begin
+					if ( confirm == 1'b1 )
 						next_state <= `STATE_STORE;
-					end
-				default: next_state <= `STATE_IDLE;
-			endcase
-		end
-		else next_state <= `STATE_IDLE;
+					else 
+						next_state <= `STATE_REQUEST;
+				end
+			`STATE_TRAP:
+				begin
+					next_state <= `STATE_TRAP;
+				end
+			`STATE_STORE:
+				begin
+					next_state <= `STATE_STORE;
+				end
+			default: next_state <= `STATE_IDLE;
+		endcase
 	end
 	
 	// Debug assignment
